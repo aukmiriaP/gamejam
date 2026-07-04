@@ -1796,8 +1796,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AnchorGame.TrajectoryPredictor
   player: {fileID: 525510509}
   predictionDistance: 30
-  dashWorldPitch: 0.5
   sortingOrder: 25
+  visualStyle: {fileID: 11400000, guid: 6889f657a579478f9c9ea76f7f9f7c41, type: 2}
+  dashWorldPitch: 0.5
 --- !u!120 &1686334358
 LineRenderer:
   serializedVersion: 3

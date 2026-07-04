@@ -407,3 +407,4 @@ MonoBehaviour:
   destroyOnAttach: 0
   destroyOnObstacle: 1
   ropeSortingOrder: 25
+  visualStyle: {fileID: 11400000, guid: 1d52f3546d8d4406be96fedc920ce337, type: 2}
