@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f7ed2ea091c19744ae147ddd06b1b58, type: 3}
+  m_Name: AnchorEnergyStyle
+  m_EditorClassIdentifier: 
+  useEnergyRopeStyle: 1
+  ropeCoreColor: {r: 0.35, g: 1, b: 1, a: 0.95}
+  ropeGlowColor: {r: 0, g: 0.65, b: 1, a: 0.34}
+  ropeCoreWidth: 0.045
+  ropeGlowWidth: 0.18
+  ropePulseSpeed: 7
+  ropePulseAmount: 0.18
+  anchorHeadColor: {r: 0.55, g: 1, b: 1, a: 1}
+  anchorHeadGlowColor: {r: 0, g: 0.75, b: 1, a: 0.38}
+  anchorHeadGlowScale: 1.75
+  anchorTrailColor: {r: 0, g: 0.8, b: 1, a: 0.58}
+  anchorTrailTime: 0.22
+  anchorTrailWidth: 0.14

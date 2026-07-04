@@ -10,10 +10,12 @@ namespace AnchorGame
     /// - FreeFlight:  飞船沿当前速度方向做匀速直线运动（无外力惯性飞行）
     /// - Anchoring:   锚已发射但尚未命中天体，飞船继续惯性飞行
     /// - Orbiting:    锚已命中天体，飞船以天体为圆心做匀速圆周运动
+    /// - PullingToCheckpoint: 锚命中存档点，飞船沿钩锁方向直线靠近
+    /// - PullingToWormhole: 锚命中虫洞，飞船沿钩锁方向直线靠近并传送
     ///
     /// 操作：
     /// - 鼠标瞄准方向，左键单击发射/取消/释放（点击语义随状态切换）
-    /// - Orbiting 状态下按住 D 加速摆荡、A 减速摆荡
+    /// - Orbiting 状态下锚链会自动缩短，玩家需要在撞上天体前释放
     /// </summary>
     [RequireComponent(typeof(Rigidbody2D))]
     public class PlayerShip : MonoBehaviour
@@ -38,30 +40,44 @@ namespace AnchorGame
         [Tooltip("锚发射后的冷却时间 (秒)")]
         public float anchorCooldown = 0.3f;
 
-        [Header("摆荡加减速")]
-        [Tooltip("持续按住加速键，达到最大角加速度所需的时间 (秒)。加速度本身从 0 缓慢爬升到这个上限，模拟引擎先慢后快的提速感")]
-        public float accelRampUpTime = 1.5f;
+        [Header("锚定坠落")]
+        [Tooltip("锚命中天体后，飞船被拉向天体的半径缩短速度 (m/s)")]
+        public float anchorChainShortenSpeed = 1.4f;
 
-<<<<<<< Updated upstream
         [Tooltip("最大角加速度 (弧度/秒²)，加速爬升到头之后的恒定加速度")]
         public float maxOrbitAccel = 12f;
-=======
         [Tooltip("发射音效")]
         public AudioClip shootSFX;
         [Tooltip("坠毁音效")]
         public AudioClip crashSFX;
         [Tooltip("插锚音效")]
         public AudioClip hitSFX;
-
+        
         [Tooltip("靠近天体时释放速度的增长曲线。0=线性，0.5=前段增长更明显，1=标准曲线，2=后段增长更明显")]
         public float orbitSpeedGainExponent = 0.5f;
->>>>>>> Stashed changes
 
-        [Tooltip("刹车（反方向输入）逼近 0 转速的响应速度，越大刹车越干脆")]
-        public float brakeResponsiveness = 3f;
+        [Tooltip("锚定期间可积累到的最大释放速度 (m/s)")]
+        public float maxOrbitReleaseSpeed = 18f;
 
-        [Tooltip("摆荡角速度上限 (弧度/秒)")]
-        public float maxOrbitAngularSpeed = 8f;
+        [Tooltip("判定撞上天体时额外保留的距离 (m)，越大越早死亡")]
+        public float planetImpactPadding = 0.08f;
+
+        [Tooltip("找不到玩家碰撞体时，用于撞星判定的飞船半径兜底值 (m)")]
+        public float fallbackShipCollisionRadius = 0.35f;
+
+        [Header("存档点牵引")]
+        [Tooltip("锚命中存档点后，飞船沿钩锁方向直线靠近的速度 (m/s)")]
+        public float checkpointPullSpeed = 8f;
+
+        [Tooltip("距离钩锁命中点多近时视为抵达存档点")]
+        public float checkpointArrivalDistance = 0.2f;
+
+        [Header("虫洞牵引")]
+        [Tooltip("锚命中虫洞后，飞船沿钩锁方向直线靠近的速度 (m/s)")]
+        public float wormholePullSpeed = 8f;
+
+        [Tooltip("距离虫洞多近时视为接触虫洞并触发传送")]
+        public float wormholeArrivalDistance = 0.2f;
 
         [Header("输入设置")]
         [Tooltip("true=按住鼠标左键发射松开释放, false=单击切换发射/释放")]
@@ -76,6 +92,8 @@ namespace AnchorGame
             FreeFlight,
             Anchoring,
             Orbiting,
+            PullingToCheckpoint,
+            PullingToWormhole,
             WaitingAtCheckpoint
         }
 
@@ -89,17 +107,20 @@ namespace AnchorGame
         [SerializeField] private float _orbitAngle;
         [SerializeField] private float _orbitRadius;
         [SerializeField] private float _orbitAngularSpeed;
+        [SerializeField] private float _orbitTangentSpeed;
         [SerializeField] private int _orbitDirection = 1;
-
-        // 加速度爬升计时器：同一个"加速阶段"持续期间累加，用来把加速度本身从 0 缓慢爬升到上限；
-        // 阶段一变化（比如从刹车切到加速、或松开按键）就清零重新爬升。
-        private float _accelRampTimer;
-        private bool _wasAccelPhase;
 
         private Rigidbody2D _rb;
         private AnchorProjectile _activeAnchor;
         private CelestialBody _orbitingBody;
+        private Checkpoint _pullingCheckpoint;
+        private Wormhole _pullingWormhole;
+        private Vector2 _checkpointPullTarget;
+        private Vector2 _wormholePullTarget;
+        private float _orbitStartRadius;
+        private float _shipCollisionRadius;
         private float _anchorCooldownTimer;
+        private float _wormholeCooldownTimer;
         private Vector2 _aimDirection = Vector2.up;
         private Camera _cam;
         private Vector2 _initialSpawnPosition;
@@ -118,6 +139,7 @@ namespace AnchorGame
             _cam = Camera.main;
             _velocity = Vector2.right * moveSpeed;
             _initialSpawnPosition = transform.position;
+            _shipCollisionRadius = EstimateShipCollisionRadius();
         }
 
         private void Update()
@@ -140,6 +162,14 @@ namespace AnchorGame
                     break;
                 case ShipState.Orbiting:
                     OrbitMove();
+                    CheckAnchorLost();
+                    break;
+                case ShipState.PullingToCheckpoint:
+                    PullToCheckpointMove();
+                    CheckAnchorLost();
+                    break;
+                case ShipState.PullingToWormhole:
+                    PullToWormholeMove();
                     CheckAnchorLost();
                     break;
                 case ShipState.WaitingAtCheckpoint:
@@ -179,6 +209,20 @@ namespace AnchorGame
                     if (fireReleased || (firePressed && !useHoldToAim))
                     {
                         ReleaseAnchor();
+                    }
+                    break;
+
+                case ShipState.PullingToCheckpoint:
+                    if (fireReleased || (firePressed && !useHoldToAim))
+                    {
+                        ReleaseCheckpointPull();
+                    }
+                    break;
+
+                case ShipState.PullingToWormhole:
+                    if (fireReleased || (firePressed && !useHoldToAim))
+                    {
+                        ReleaseWormholePull();
                     }
                     break;
             }
@@ -221,6 +265,8 @@ namespace AnchorGame
         {
             if (_anchorCooldownTimer > 0f)
                 _anchorCooldownTimer -= Time.deltaTime;
+            if (_wormholeCooldownTimer > 0f)
+                _wormholeCooldownTimer -= Time.deltaTime;
         }
 
         private void FireAnchor()
@@ -300,55 +346,26 @@ namespace AnchorGame
         {
             if (_orbitingBody == null) return;
 
-            if (Keyboard.current != null)
+            float impactRadius = GetOrbitImpactRadius();
+            _orbitRadius = Mathf.MoveTowards(
+                _orbitRadius,
+                impactRadius,
+                Mathf.Max(0f, anchorChainShortenSpeed) * Time.fixedDeltaTime
+            );
+
+            if (_orbitRadius <= impactRadius + 0.001f)
             {
-                bool accelHeld = Keyboard.current.dKey.isPressed && !Keyboard.current.aKey.isPressed;
-                bool decelHeld = Keyboard.current.aKey.isPressed && !Keyboard.current.dKey.isPressed;
-                int desiredDir = accelHeld ? 1 : (decelHeld ? -1 : 0);
-
-                if (desiredDir == 0)
-                {
-                    // 没有输入：保持当前转速不变，同时清空爬升计时器，
-                    // 这样下次按键重新开始加速时又是从"慢慢起步"开始。
-                    _accelRampTimer = 0f;
-                    _wasAccelPhase = false;
-                }
-                else
-                {
-                    float signedSpeed = _orbitAngularSpeed * _orbitDirection;
-
-                    // 加速阶段：输入方向跟当前转向一致（或从静止起步）。
-                    // 刹车阶段：输入方向跟当前转向相反，即"反打方向"减速。
-                    bool isAccelPhase = Mathf.Approximately(signedSpeed, 0f) || (signedSpeed > 0f) == (desiredDir > 0);
-
-                    if (isAccelPhase != _wasAccelPhase)
-                    {
-                        _accelRampTimer = 0f;
-                    }
-                    _wasAccelPhase = isAccelPhase;
-
-                    if (isAccelPhase)
-                    {
-                        // 加速度本身随按住时长做 ease-in 爬升（先慢后快），到 accelRampUpTime 后打满 maxOrbitAccel。
-                        _accelRampTimer += Time.fixedDeltaTime;
-                        float rampT = Mathf.Clamp01(_accelRampTimer / accelRampUpTime);
-                        float accelMagnitude = maxOrbitAccel * rampT * rampT;
-                        signedSpeed += desiredDir * accelMagnitude * Time.fixedDeltaTime;
-                        signedSpeed = Mathf.Clamp(signedSpeed, -maxOrbitAngularSpeed, maxOrbitAngularSpeed);
-                    }
-                    else
-                    {
-                        // 刹车：指数逼近 0，越快(离 0 越远)刹得越猛，越接近 0 越轻，
-                        // 到很接近 0 时直接归零，避免无限逼近导致的抖动，紧接着上面的 isAccelPhase 判定会在下一帧转为加速阶段。
-                        float t = 1f - Mathf.Exp(-brakeResponsiveness * Time.fixedDeltaTime);
-                        signedSpeed = Mathf.Lerp(signedSpeed, 0f, t);
-                        if (Mathf.Abs(signedSpeed) < 0.02f) signedSpeed = 0f;
-                    }
-
-                    _orbitDirection = signedSpeed >= 0f ? 1 : -1;
-                    _orbitAngularSpeed = Mathf.Clamp(Mathf.Abs(signedSpeed), 0f, maxOrbitAngularSpeed);
-                }
+                CrashIntoOrbitingBody();
+                return;
             }
+
+            float fallProgress = Mathf.Clamp01(Mathf.InverseLerp(_orbitStartRadius, impactRadius, _orbitRadius));
+            float speedProgress = orbitSpeedGainExponent <= 0f
+                ? fallProgress
+                : Mathf.Pow(fallProgress, orbitSpeedGainExponent);
+            float speedCap = Mathf.Max(moveSpeed, maxOrbitReleaseSpeed);
+            _orbitTangentSpeed = Mathf.Lerp(moveSpeed, speedCap, speedProgress);
+            _orbitAngularSpeed = _orbitTangentSpeed / Mathf.Max(_orbitRadius, 0.01f);
 
             Vector2 center = _orbitingBody.transform.position;
 
@@ -365,6 +382,63 @@ namespace AnchorGame
             _velocity = GetOrbitTangent();
         }
 
+        private void PullToCheckpointMove()
+        {
+            if (_pullingCheckpoint == null)
+            {
+                _currentState = ShipState.FreeFlight;
+                return;
+            }
+
+            Vector2 currentPosition = _rb.position;
+            Vector2 toTarget = _checkpointPullTarget - currentPosition;
+            float distance = toTarget.magnitude;
+
+            if (distance <= Mathf.Max(0.01f, checkpointArrivalDistance))
+            {
+                _pullingCheckpoint.Activate(this);
+                return;
+            }
+
+            Vector2 direction = toTarget / distance;
+            float step = Mathf.Min(distance, Mathf.Max(0.01f, checkpointPullSpeed) * Time.fixedDeltaTime);
+            Vector2 nextPosition = currentPosition + direction * step;
+
+            _velocity = direction * checkpointPullSpeed;
+            _rb.MovePosition(nextPosition);
+        }
+
+        private void PullToWormholeMove()
+        {
+            if (_pullingWormhole == null)
+            {
+                _currentState = ShipState.FreeFlight;
+                return;
+            }
+
+            Vector2 currentPosition = _rb.position;
+            Vector2 toTarget = _wormholePullTarget - currentPosition;
+            float distance = toTarget.magnitude;
+
+            float arrivalDistance = Mathf.Max(
+                Mathf.Max(0.01f, wormholeArrivalDistance),
+                _pullingWormhole.ArrivalDistance
+            );
+            if (distance <= arrivalDistance)
+            {
+                _pullingWormhole.Teleport(this);
+                return;
+            }
+
+            Vector2 direction = toTarget / distance;
+            float pullSpeed = Mathf.Max(0.01f, wormholePullSpeed);
+            float step = Mathf.Min(distance, pullSpeed * Time.fixedDeltaTime);
+            Vector2 nextPosition = currentPosition + direction * step;
+
+            _velocity = direction * pullSpeed;
+            _rb.MovePosition(nextPosition);
+        }
+
         private void CheckAnchorLost()
         {
             if (_activeAnchor == null && _currentState != ShipState.FreeFlight)
@@ -379,6 +453,18 @@ namespace AnchorGame
                     _orbitingBody = null;
                     _currentState = ShipState.FreeFlight;
                     Debug.Log("[Ship] 轨道天体丢失，回到自由飞行");
+                }
+                else if (_currentState == ShipState.PullingToCheckpoint)
+                {
+                    _pullingCheckpoint = null;
+                    _currentState = ShipState.FreeFlight;
+                    Debug.Log("[Ship] 存档点钩锁丢失，回到自由飞行");
+                }
+                else if (_currentState == ShipState.PullingToWormhole)
+                {
+                    _pullingWormhole = null;
+                    _currentState = ShipState.FreeFlight;
+                    Debug.Log("[Ship] 虫洞钩锁丢失，回到自由飞行");
                 }
             }
         }
@@ -399,15 +485,14 @@ namespace AnchorGame
             // 而那个方向通常跟飞船当时的前进方向相反，看起来就像被反向弹开。
             // 这里只挡一个真正的 0 半径除零边界情况，不做任何视觉上的位置矫正。
             _orbitRadius = Mathf.Max(Vector2.Distance(shipPos, center), 0.05f);
+            _orbitStartRadius = _orbitRadius;
 
             Vector2 toShip = shipPos - center;
             _orbitAngle = Mathf.Atan2(toShip.y, toShip.x);
 
-            // ω = v / r，速度取完整入射速度大小（不做切向投影），保证换锚时线速度不突变；
-            // 静止起步(速度≈0)时用 moveSpeed 兜底，否则挂锚后角速度为 0、完全不转。
-            float orbitalSpeed = _velocity.magnitude;
-            if (orbitalSpeed < 0.01f) orbitalSpeed = moveSpeed;
-            _orbitAngularSpeed = orbitalSpeed / _orbitRadius;
+            // 每次锚定都是独立的释放速度窗口，避免连续锚定时上一颗行星的高速被下一颗继续放大。
+            _orbitTangentSpeed = moveSpeed;
+            _orbitAngularSpeed = _orbitTangentSpeed / _orbitRadius;
 
             float cross = toShip.x * _velocity.y - toShip.y * _velocity.x;
             _orbitDirection = cross >= 0 ? 1 : -1;
@@ -419,6 +504,53 @@ namespace AnchorGame
                     + $"方向={(_orbitDirection > 0 ? "CCW" : "CW")}");
         }
 
+        public void OnAnchorHitCheckpoint(Checkpoint checkpoint, Vector2 anchorPoint)
+        {
+            if (_currentState != ShipState.Anchoring || checkpoint == null) return;
+
+            _orbitingBody = null;
+            _pullingCheckpoint = checkpoint;
+            _checkpointPullTarget = anchorPoint;
+
+            Vector2 toTarget = _checkpointPullTarget - (Vector2)transform.position;
+            if (toTarget.sqrMagnitude < 0.0001f)
+            {
+                _checkpointPullTarget = checkpoint.SpawnPosition;
+                toTarget = _checkpointPullTarget - (Vector2)transform.position;
+            }
+
+            _velocity = toTarget.sqrMagnitude > 0.0001f
+                ? toTarget.normalized * checkpointPullSpeed
+                : Vector2.zero;
+            _currentState = ShipState.PullingToCheckpoint;
+
+            Debug.Log($"[Ship] 锚命中存档点 {checkpoint.name} → 沿钩锁直线靠近");
+        }
+
+        public void OnAnchorHitWormhole(Wormhole wormhole, Vector2 anchorPoint)
+        {
+            if (_currentState != ShipState.Anchoring || wormhole == null) return;
+
+            _orbitingBody = null;
+            _pullingCheckpoint = null;
+            _pullingWormhole = wormhole;
+            _wormholePullTarget = wormhole.AnchorPoint;
+
+            Vector2 toTarget = _wormholePullTarget - (Vector2)transform.position;
+            if (toTarget.sqrMagnitude < 0.0001f)
+            {
+                toTarget = anchorPoint - (Vector2)transform.position;
+            }
+
+            float pullSpeed = Mathf.Max(0.01f, wormholePullSpeed);
+            _velocity = toTarget.sqrMagnitude > 0.0001f
+                ? toTarget.normalized * pullSpeed
+                : Vector2.zero;
+            _currentState = ShipState.PullingToWormhole;
+
+            Debug.Log($"[Ship] 锚命中虫洞 {wormhole.name} → 沿钩锁直线靠近");
+        }
+
         private Vector2 GetOrbitTangent()
         {
             if (_orbitingBody == null) return _velocity;
@@ -428,9 +560,6 @@ namespace AnchorGame
             Vector2 radial = toShip.normalized;
             Vector2 tangent = new Vector2(-radial.y, radial.x) * _orbitDirection;
 
-<<<<<<< Updated upstream
-            return tangent * (_orbitAngularSpeed * _orbitRadius);
-=======
             return tangent * _orbitTangentSpeed;
         }
 
@@ -458,10 +587,61 @@ namespace AnchorGame
             Debug.Log($"[Ship] 释放存档点钩锁，继续直线飞行: {_velocity}");
         }
 
+        private void ReleaseWormholePull()
+        {
+            if (_activeAnchor != null)
+            {
+                _activeAnchor.Terminate();
+                _activeAnchor = null;
+            }
+
+            _pullingWormhole = null;
+            _pullingCheckpoint = null;
+            _orbitingBody = null;
+            _currentState = ShipState.FreeFlight;
+            _anchorCooldownTimer = anchorCooldown;
+
+            if (_velocity.sqrMagnitude < moveSpeed * moveSpeed * 0.25f)
+            {
+                _velocity = _velocity.sqrMagnitude > 0.0001f
+                    ? _velocity.normalized * moveSpeed
+                    : Vector2.right * moveSpeed;
+            }
+
+            _rb.linearVelocity = _velocity;
+            Debug.Log($"[Ship] 释放虫洞钩锁，继续直线飞行: {_velocity}");
+        }
+
+        public bool CanUseWormhole => _wormholeCooldownTimer <= 0f;
+
+        public void TeleportThroughWormhole(Vector2 destination, float cooldown)
+        {
+            Vector2 preservedVelocity = _velocity;
+
+            if (_activeAnchor != null)
+            {
+                _activeAnchor.Terminate();
+                _activeAnchor = null;
+            }
+
+            _orbitingBody = null;
+            _pullingCheckpoint = null;
+            _pullingWormhole = null;
+            _currentState = ShipState.FreeFlight;
+            _anchorCooldownTimer = anchorCooldown;
+            _wormholeCooldownTimer = Mathf.Max(0.01f, cooldown);
+            _velocity = preservedVelocity;
+
+            _rb.position = destination;
+            transform.position = destination;
+            _rb.linearVelocity = _velocity;
+
+            Debug.Log($"[Ship] 虫洞传送完成，速度保持: {_velocity}");
+        }
+
         private void CrashIntoOrbitingBody()
         {
             string bodyName = _orbitingBody != null ? _orbitingBody.name : "天体";
-            
             Debug.Log($"[Ship] 撞上 {bodyName}，从当前存档点重生");
             RespawnAtCheckpoint();
         }
@@ -486,7 +666,7 @@ namespace AnchorGame
             Vector3 extents = shipCollider.bounds.extents;
             float radius = Mathf.Max(extents.x, extents.y);
             return Mathf.Max(0.01f, radius);
->>>>>>> Stashed changes
+
         }
 
         public void OnAnchorDestroyed()
@@ -503,10 +683,10 @@ namespace AnchorGame
             }
 
             _orbitingBody = null;
+            _pullingCheckpoint = null;
+            _pullingWormhole = null;
             _currentState = ShipState.FreeFlight;
             _anchorCooldownTimer = anchorCooldown;
-            _accelRampTimer = 0f;
-            _wasAccelPhase = false;
 
             _velocity += impulse;
             if (_velocity.sqrMagnitude < moveSpeed * moveSpeed * 0.25f)
@@ -516,6 +696,60 @@ namespace AnchorGame
 
             _rb.linearVelocity = _velocity;
             Debug.Log($"[Ship] 受到碎石击退: {impulse}");
+        }
+
+        public void ApplyBlackHoleAttraction(
+            Vector2 blackHoleCenter,
+            float acceleration,
+            float maxSpeed,
+            float radialBrakeStrength,
+            float steeringStrength,
+            float deltaTime
+        )
+        {
+            if (_currentState == ShipState.WaitingAtCheckpoint) return;
+
+            if (_activeAnchor != null)
+            {
+                _activeAnchor.Terminate();
+                _activeAnchor = null;
+            }
+
+            _orbitingBody = null;
+            _pullingCheckpoint = null;
+            _pullingWormhole = null;
+            _currentState = ShipState.FreeFlight;
+
+            Vector2 toCenter = blackHoleCenter - (Vector2)transform.position;
+            if (toCenter.sqrMagnitude < 0.0001f) return;
+
+            Vector2 pullDirection = toCenter.normalized;
+            float safeDeltaTime = Mathf.Max(0f, deltaTime);
+            _velocity += pullDirection * Mathf.Max(0f, acceleration) * safeDeltaTime;
+
+            // Game-feel helper: cancel part of the velocity that is escaping away from the black hole.
+            float inwardSpeed = Vector2.Dot(_velocity, pullDirection);
+            if (inwardSpeed < 0f)
+            {
+                float brakeAmount = Mathf.Clamp01(Mathf.Max(0f, radialBrakeStrength) * safeDeltaTime);
+                _velocity -= pullDirection * inwardSpeed * brakeAmount;
+            }
+
+            float currentSpeed = _velocity.magnitude;
+            if (currentSpeed > 0.0001f)
+            {
+                Vector2 targetVelocity = pullDirection * Mathf.Max(moveSpeed, currentSpeed);
+                float steering = Mathf.Clamp01(Mathf.Max(0f, steeringStrength) * safeDeltaTime);
+                _velocity = Vector2.Lerp(_velocity, targetVelocity, steering);
+            }
+
+            float speedCap = Mathf.Max(moveSpeed, maxSpeed);
+            if (_velocity.sqrMagnitude > speedCap * speedCap)
+            {
+                _velocity = _velocity.normalized * speedCap;
+            }
+
+            _rb.linearVelocity = _velocity;
         }
 
         public void StopAtCheckpoint(Checkpoint checkpoint)
@@ -529,13 +763,13 @@ namespace AnchorGame
             }
 
             _orbitingBody = null;
+            _pullingCheckpoint = null;
+            _pullingWormhole = null;
             _stoppedCheckpoint = checkpoint;
             _waitingCanLaunch = !checkpoint.IsFinalCheckpoint;
             _waitForMouseReleaseBeforeLaunch = Mouse.current != null && Mouse.current.leftButton.isPressed;
             _currentState = ShipState.WaitingAtCheckpoint;
             _anchorCooldownTimer = 0f;
-            _accelRampTimer = 0f;
-            _wasAccelPhase = false;
             _velocity = Vector2.zero;
 
             _activeCheckpoint = checkpoint;
@@ -592,10 +826,10 @@ namespace AnchorGame
             }
 
             _orbitingBody = null;
+            _pullingCheckpoint = null;
+            _pullingWormhole = null;
             _currentState = ShipState.WaitingAtCheckpoint;
             _anchorCooldownTimer = 0f;
-            _accelRampTimer = 0f;
-            _wasAccelPhase = false;
 
             Vector2 spawnPosition = _activeCheckpoint != null
                 ? _activeCheckpoint.SpawnPosition

@@ -206,7 +206,7 @@ LineRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 25
   m_MaskInteraction: 0
   m_Positions:
   - {x: 0, y: 0, z: 0}
@@ -406,4 +406,5 @@ MonoBehaviour:
   attachToSurface: 1
   destroyOnAttach: 0
   destroyOnObstacle: 1
-  hitSFX: {fileID: 8300000, guid: 496c6534fcf5a3a4e88d53756e489ee0, type: 3}
+  ropeSortingOrder: 25
+  visualStyle: {fileID: 11400000, guid: 1d52f3546d8d4406be96fedc920ce337, type: 2}

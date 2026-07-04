@@ -3,11 +3,18 @@ using System.Collections.Generic;
 
 namespace AnchorGame
 {
-    [RequireComponent(typeof(CircleCollider2D))]
     public class Checkpoint : MonoBehaviour
     {
+        private enum CheckpointColliderShape
+        {
+            Circle,
+            Box
+        }
+
         [Header("存档点")]
+        [SerializeField] private CheckpointColliderShape colliderShape = CheckpointColliderShape.Circle;
         [SerializeField] private float triggerRadius = 1.25f;
+        [SerializeField] private Vector2 triggerSize = new Vector2(2.5f, 1.25f);
         [SerializeField] private bool respawnFacingRight = true;
         [SerializeField] private bool finalCheckpoint;
 
@@ -24,7 +31,8 @@ namespace AnchorGame
         [SerializeField] private int rippleSegments = 96;
         [SerializeField] private Color rippleColor = new Color(0f, 0.95f, 1f, 0.55f);
 
-        private CircleCollider2D _collider;
+        private CircleCollider2D _circleCollider;
+        private BoxCollider2D _boxCollider;
         private SpriteRenderer _spriteRenderer;
         private bool _activated;
         private float _rippleTimer;
@@ -90,8 +98,10 @@ namespace AnchorGame
             return (respawnFacingRight ? Vector2.right : (Vector2)transform.right).normalized * speed;
         }
 
-        private void Activate(PlayerShip player)
+        public void Activate(PlayerShip player)
         {
+            if (player == null) return;
+
             if (!_activated)
             {
                 _activated = true;
@@ -109,8 +119,10 @@ namespace AnchorGame
 
         private void CacheComponents()
         {
-            if (_collider == null)
-                _collider = GetComponent<CircleCollider2D>();
+            if (_circleCollider == null)
+                _circleCollider = GetComponent<CircleCollider2D>();
+            if (_boxCollider == null)
+                _boxCollider = GetComponent<BoxCollider2D>();
             if (_spriteRenderer == null)
                 _spriteRenderer = GetComponent<SpriteRenderer>();
         }
@@ -133,10 +145,34 @@ namespace AnchorGame
 
         private void SyncCollider()
         {
-            if (_collider == null) return;
+            if (colliderShape == CheckpointColliderShape.Circle)
+            {
+                if (_circleCollider == null)
+                    _circleCollider = GetComponent<CircleCollider2D>();
+                if (_circleCollider == null)
+                    _circleCollider = gameObject.AddComponent<CircleCollider2D>();
 
-            _collider.isTrigger = true;
-            _collider.radius = Mathf.Max(0.1f, triggerRadius);
+                _circleCollider.enabled = true;
+                _circleCollider.isTrigger = true;
+                _circleCollider.radius = Mathf.Max(0.1f, triggerRadius);
+
+                if (_boxCollider != null)
+                    _boxCollider.enabled = false;
+            }
+            else
+            {
+                if (_boxCollider == null)
+                    _boxCollider = GetComponent<BoxCollider2D>();
+                if (_boxCollider == null)
+                    _boxCollider = gameObject.AddComponent<BoxCollider2D>();
+
+                _boxCollider.enabled = true;
+                _boxCollider.isTrigger = true;
+                _boxCollider.size = new Vector2(Mathf.Max(0.1f, triggerSize.x), Mathf.Max(0.1f, triggerSize.y));
+
+                if (_circleCollider != null)
+                    _circleCollider.enabled = false;
+            }
         }
 
         private void ApplyVisual()
@@ -229,8 +265,8 @@ namespace AnchorGame
 
             if (GUILayout.Button("进入下一关", GUILayout.Height(34f)))
             {
-                Debug.Log("[Checkpoint] 下一关尚未接入，后续可在这里加载关卡场景。");
                 HideCompletionWindow();
+                LevelManager.LoadNextLevel();
             }
             GUILayout.EndHorizontal();
         }
@@ -275,7 +311,17 @@ namespace AnchorGame
         private void OnDrawGizmos()
         {
             Gizmos.color = _activated ? activeColor : inactiveColor;
-            Gizmos.DrawWireSphere(transform.position, Mathf.Max(0.1f, triggerRadius));
+            if (colliderShape == CheckpointColliderShape.Circle)
+            {
+                Gizmos.DrawWireSphere(transform.position, Mathf.Max(0.1f, triggerRadius));
+            }
+            else
+            {
+                Matrix4x4 oldMatrix = Gizmos.matrix;
+                Gizmos.matrix = transform.localToWorldMatrix;
+                Gizmos.DrawWireCube(Vector3.zero, new Vector3(Mathf.Max(0.1f, triggerSize.x), Mathf.Max(0.1f, triggerSize.y), 0f));
+                Gizmos.matrix = oldMatrix;
+            }
 
             if (emitGuidanceRipples)
             {
