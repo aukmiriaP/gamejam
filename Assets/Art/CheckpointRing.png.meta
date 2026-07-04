@@ -1,0 +1,845 @@
+fileFormatVersion: 2
+guid: 1655cb6ef0931354d9de685023114cdd
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7676044252093564352
+    second: CheckpointRing_0
+  - first:
+      213: -1277914750778693855
+    second: CheckpointRing_1
+  - first:
+      213: -5547934272720335548
+    second: CheckpointRing_2
+  - first:
+      213: -6561711495586864170
+    second: CheckpointRing_3
+  - first:
+      213: -864240870547337971
+    second: CheckpointRing_4
+  - first:
+      213: 1412625350287941797
+    second: CheckpointRing_5
+  - first:
+      213: -1807375285679573110
+    second: CheckpointRing_6
+  - first:
+      213: -2999316958121374580
+    second: CheckpointRing_7
+  - first:
+      213: 6289105334821732944
+    second: CheckpointRing_8
+  - first:
+      213: -5904130478006334784
+    second: CheckpointRing_9
+  - first:
+      213: -2855607990182254619
+    second: CheckpointRing_10
+  - first:
+      213: -1232277589472451641
+    second: CheckpointRing_11
+  - first:
+      213: -2722567901101870434
+    second: CheckpointRing_12
+  - first:
+      213: -7293258004535735731
+    second: CheckpointRing_13
+  - first:
+      213: 4079536979078458936
+    second: CheckpointRing_14
+  - first:
+      213: 7905873592118611432
+    second: CheckpointRing_15
+  - first:
+      213: 2925325875368349942
+    second: CheckpointRing_16
+  - first:
+      213: 4098739521234909171
+    second: CheckpointRing_17
+  - first:
+      213: 1678387459783585007
+    second: CheckpointRing_18
+  - first:
+      213: -1961848396866614343
+    second: CheckpointRing_19
+  - first:
+      213: -5886337314554005644
+    second: CheckpointRing_20
+  - first:
+      213: -1552563986288923051
+    second: CheckpointRing_21
+  - first:
+      213: -7206154712809691050
+    second: CheckpointRing_22
+  - first:
+      213: 57090726994004458
+    second: CheckpointRing_23
+  - first:
+      213: 4614383654518396479
+    second: CheckpointRing_24
+  - first:
+      213: -8758232674665449709
+    second: CheckpointRing_25
+  - first:
+      213: 2431984820427274791
+    second: CheckpointRing_26
+  - first:
+      213: 3571949622755663241
+    second: CheckpointRing_27
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 51.2
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: CheckpointRing_0
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 104
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04ab8c11c66397590800000000000000
+      internalID: -7676044252093564352
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CheckpointRing_1
+      rect:
+        serializedVersion: 2
+        x: 43
+        y: 108
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 127aa9a0e4fe34ee0800000000000000
+      internalID: -1277914750778693855
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CheckpointRing_2
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 111
+        width: 9
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 44d0a455c27c103b0800000000000000
+      internalID: -5547934272720335548
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CheckpointRing_3
+      rect:
+        serializedVersion: 2
+        x: 68
+        y: 110
+        width: 10
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d3a2f2092e10f4a0800000000000000
+      internalID: -6561711495586864170
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CheckpointRing_4
+      rect:
+        serializedVersion: 2
+        x: 78
+        y: 106
+        width: 12
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d0dc6a6d1899104f0800000000000000
+      internalID: -864240870547337971
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CheckpointRing_5
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 101
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a0ef9c8547aa9310800000000000000
+      internalID: 1412625350287941797
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CheckpointRing_6
+      rect:
+        serializedVersion: 2
+        x: 14
+        y: 88
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a87bf39e0c9eae6e0800000000000000
+      internalID: -1807375285679573110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CheckpointRing_7
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 97
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c8cce5e1e194066d0800000000000000
+      internalID: -2999316958121374580
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CheckpointRing_8
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 93
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 052401d1bf3674750800000000000000
+      internalID: 6289105334821732944
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CheckpointRing_9
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 78
+        width: 14
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0ca00e69c90501ea0800000000000000
+      internalID: -5904130478006334784
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CheckpointRing_10
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 84
+        width: 13
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5e76b6f99a7de58d0800000000000000
+      internalID: -2855607990182254619
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CheckpointRing_11
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 74
+        width: 13
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7c3e1deaf0216eee0800000000000000
+      internalID: -1232277589472451641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CheckpointRing_12
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 68
+        width: 13
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e9231f13bee773ad0800000000000000
+      internalID: -2722567901101870434
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CheckpointRing_13
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 63
+        width: 12
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d4a8f587c7429ca90800000000000000
+      internalID: -7293258004535735731
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CheckpointRing_14
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 56
+        width: 12
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83eaa06a44d6d9830800000000000000
+      internalID: 4079536979078458936
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CheckpointRing_15
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 50
+        width: 13
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ed0f59152e47bd60800000000000000
+      internalID: 7905873592118611432
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CheckpointRing_16
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 43
+        width: 13
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f0d6957268d89820800000000000000
+      internalID: 2925325875368349942
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CheckpointRing_17
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 32
+        width: 13
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f7bf06e0e5a1e830800000000000000
+      internalID: 4098739521234909171
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CheckpointRing_18
+      rect:
+        serializedVersion: 2
+        x: 106
+        y: 38
+        width: 14
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: feceedf8084da4710800000000000000
+      internalID: 1678387459783585007
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CheckpointRing_19
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 22
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9bb8891074d16c4e0800000000000000
+      internalID: -1961848396866614343
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CheckpointRing_20
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 14
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 477b1e946678f4ea0800000000000000
+      internalID: -5886337314554005644
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CheckpointRing_21
+      rect:
+        serializedVersion: 2
+        x: 93
+        y: 18
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 55e2f22c74f247ae0800000000000000
+      internalID: -1552563986288923051
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CheckpointRing_22
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 27
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 658a872f7789efb90800000000000000
+      internalID: -7206154712809691050
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CheckpointRing_23
+      rect:
+        serializedVersion: 2
+        x: 38
+        y: 8
+        width: 12
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ae94276b6b3dac000800000000000000
+      internalID: 57090726994004458
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CheckpointRing_24
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 5
+        width: 10
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f3610f85c75990040800000000000000
+      internalID: 4614383654518396479
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CheckpointRing_25
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 5
+        width: 9
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 317b85619c1847680800000000000000
+      internalID: -8758232674665449709
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CheckpointRing_26
+      rect:
+        serializedVersion: 2
+        x: 74
+        y: 7
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 72ab5b81f4520c120800000000000000
+      internalID: 2431984820427274791
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CheckpointRing_27
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 11
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 98d11f3c14d129130800000000000000
+      internalID: 3571949622755663241
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      CheckpointRing_0: -7676044252093564352
+      CheckpointRing_1: -1277914750778693855
+      CheckpointRing_10: -2855607990182254619
+      CheckpointRing_11: -1232277589472451641
+      CheckpointRing_12: -2722567901101870434
+      CheckpointRing_13: -7293258004535735731
+      CheckpointRing_14: 4079536979078458936
+      CheckpointRing_15: 7905873592118611432
+      CheckpointRing_16: 2925325875368349942
+      CheckpointRing_17: 4098739521234909171
+      CheckpointRing_18: 1678387459783585007
+      CheckpointRing_19: -1961848396866614343
+      CheckpointRing_2: -5547934272720335548
+      CheckpointRing_20: -5886337314554005644
+      CheckpointRing_21: -1552563986288923051
+      CheckpointRing_22: -7206154712809691050
+      CheckpointRing_23: 57090726994004458
+      CheckpointRing_24: 4614383654518396479
+      CheckpointRing_25: -8758232674665449709
+      CheckpointRing_26: 2431984820427274791
+      CheckpointRing_27: 3571949622755663241
+      CheckpointRing_3: -6561711495586864170
+      CheckpointRing_4: -864240870547337971
+      CheckpointRing_5: 1412625350287941797
+      CheckpointRing_6: -1807375285679573110
+      CheckpointRing_7: -2999316958121374580
+      CheckpointRing_8: 6289105334821732944
+      CheckpointRing_9: -5904130478006334784
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
