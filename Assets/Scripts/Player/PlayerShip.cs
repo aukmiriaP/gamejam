@@ -63,7 +63,8 @@ namespace AnchorGame
         {
             FreeFlight,
             Anchoring,
-            Orbiting
+            Orbiting,
+            WaitingAtCheckpoint
         }
 
         [Header("调试（只读）")]
@@ -90,6 +91,9 @@ namespace AnchorGame
         private Vector2 _aimDirection = Vector2.up;
         private Camera _cam;
         private Vector2 _initialSpawnPosition;
+        private Checkpoint _stoppedCheckpoint;
+        private bool _waitingCanLaunch;
+        private bool _waitForMouseReleaseBeforeLaunch;
 
         private void Awake()
         {
@@ -126,6 +130,9 @@ namespace AnchorGame
                     OrbitMove();
                     CheckAnchorLost();
                     break;
+                case ShipState.WaitingAtCheckpoint:
+                    HoldAtCheckpoint();
+                    break;
             }
         }
 
@@ -138,6 +145,10 @@ namespace AnchorGame
 
             switch (_currentState)
             {
+                case ShipState.WaitingAtCheckpoint:
+                    UpdateCheckpointLaunchInput(firePressed);
+                    break;
+
                 case ShipState.FreeFlight:
                     if (firePressed && _anchorCooldownTimer <= 0f)
                     {
@@ -159,6 +170,21 @@ namespace AnchorGame
                     }
                     break;
             }
+        }
+
+        private void UpdateCheckpointLaunchInput(bool firePressed)
+        {
+            if (Mouse.current != null && !Mouse.current.leftButton.isPressed)
+            {
+                _waitForMouseReleaseBeforeLaunch = false;
+            }
+
+            if (!_waitingCanLaunch || _waitForMouseReleaseBeforeLaunch || !firePressed)
+            {
+                return;
+            }
+
+            LaunchFromCheckpoint();
         }
 
         private void UpdateAimDirection()
@@ -239,6 +265,18 @@ namespace AnchorGame
         private void FreeFlightMove()
         {
             _rb.linearVelocity = _velocity;
+        }
+
+        private void HoldAtCheckpoint()
+        {
+            _velocity = Vector2.zero;
+            _rb.linearVelocity = Vector2.zero;
+
+            if (_stoppedCheckpoint != null)
+            {
+                _rb.position = _stoppedCheckpoint.SpawnPosition;
+                transform.position = _stoppedCheckpoint.SpawnPosition;
+            }
         }
 
         private void OrbitMove()
@@ -405,6 +443,42 @@ namespace AnchorGame
             Debug.Log($"[Ship] 受到碎石击退: {impulse}");
         }
 
+        public void StopAtCheckpoint(Checkpoint checkpoint)
+        {
+            if (checkpoint == null) return;
+
+            if (_activeAnchor != null)
+            {
+                _activeAnchor.Terminate();
+                _activeAnchor = null;
+            }
+
+            _orbitingBody = null;
+            _stoppedCheckpoint = checkpoint;
+            _waitingCanLaunch = !checkpoint.IsFinalCheckpoint;
+            _waitForMouseReleaseBeforeLaunch = Mouse.current != null && Mouse.current.leftButton.isPressed;
+            _currentState = ShipState.WaitingAtCheckpoint;
+            _anchorCooldownTimer = 0f;
+            _accelRampTimer = 0f;
+            _wasAccelPhase = false;
+            _velocity = Vector2.zero;
+
+            _activeCheckpoint = checkpoint;
+            PlayerOxygen oxygen = GetComponent<PlayerOxygen>();
+            if (oxygen != null)
+            {
+                oxygen.OnCheckpointReached(checkpoint);
+            }
+
+            _rb.position = checkpoint.SpawnPosition;
+            transform.position = checkpoint.SpawnPosition;
+            _rb.linearVelocity = Vector2.zero;
+
+            Debug.Log(checkpoint.IsFinalCheckpoint
+                ? $"[Ship] 到达终点存档点并停止: {checkpoint.name}"
+                : $"[Ship] 到达存档点并等待再次出发: {checkpoint.name}");
+        }
+
         public void SetCheckpoint(Checkpoint checkpoint)
         {
             if (checkpoint == null || _activeCheckpoint == checkpoint) return;
@@ -419,6 +493,21 @@ namespace AnchorGame
             Debug.Log($"[Ship] 存档点已更新: {checkpoint.name}");
         }
 
+        private void LaunchFromCheckpoint()
+        {
+            Checkpoint checkpoint = _stoppedCheckpoint != null ? _stoppedCheckpoint : _activeCheckpoint;
+            _velocity = checkpoint != null
+                ? checkpoint.GetRespawnVelocity(moveSpeed)
+                : Vector2.right * moveSpeed;
+
+            _stoppedCheckpoint = null;
+            _currentState = ShipState.FreeFlight;
+            _anchorCooldownTimer = anchorCooldown;
+            _rb.linearVelocity = _velocity;
+
+            Debug.Log($"[Ship] 从存档点重新出发，速度: {_velocity}");
+        }
+
         public void RespawnAtCheckpoint()
         {
             if (_activeAnchor != null)
@@ -428,7 +517,7 @@ namespace AnchorGame
             }
 
             _orbitingBody = null;
-            _currentState = ShipState.FreeFlight;
+            _currentState = ShipState.WaitingAtCheckpoint;
             _anchorCooldownTimer = 0f;
             _accelRampTimer = 0f;
             _wasAccelPhase = false;
@@ -437,17 +526,18 @@ namespace AnchorGame
                 ? _activeCheckpoint.SpawnPosition
                 : _initialSpawnPosition;
 
-            _velocity = _activeCheckpoint != null
-                ? _activeCheckpoint.GetRespawnVelocity(moveSpeed)
-                : Vector2.right * moveSpeed;
+            _stoppedCheckpoint = _activeCheckpoint;
+            _waitingCanLaunch = true;
+            _waitForMouseReleaseBeforeLaunch = Mouse.current != null && Mouse.current.leftButton.isPressed;
+            _velocity = Vector2.zero;
 
             _rb.position = spawnPosition;
             transform.position = spawnPosition;
-            _rb.linearVelocity = _velocity;
+            _rb.linearVelocity = Vector2.zero;
 
             Debug.Log(_activeCheckpoint != null
-                ? $"[Ship] 从存档点重生: {_activeCheckpoint.name}"
-                : "[Ship] 回到初始出生点");
+                ? $"[Ship] 从存档点重生并等待出发: {_activeCheckpoint.name}"
+                : "[Ship] 回到初始出生点并等待出发");
         }
 
         private void OnTriggerEnter2D(Collider2D other)
