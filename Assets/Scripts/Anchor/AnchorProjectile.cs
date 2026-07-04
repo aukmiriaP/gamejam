@@ -9,7 +9,8 @@ namespace AnchorGame
     /// 1. 从飞船位置以初始速度发射
     /// 2. 每帧检测是否超过最大射程
     /// 3. 碰撞到带有 CelestialBody 组件的天体时，通知飞船进入轨道
-    /// 4. 碰撞到其他物体或超射程时自动销毁
+    /// 4. 碰撞到 Checkpoint 时，通知飞船直线牵引到存档点
+    /// 5. 碰撞到其他物体或超射程时自动销毁
     /// </summary>
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(CircleCollider2D))]
@@ -96,6 +97,13 @@ namespace AnchorGame
                 return;
             }
 
+            Checkpoint checkpoint = other.GetComponent<Checkpoint>();
+            if (checkpoint != null)
+            {
+                OnHitCheckpoint(checkpoint);
+                return;
+            }
+
             CelestialBody body = other.GetComponent<CelestialBody>();
             if (body != null)
             {
@@ -106,6 +114,24 @@ namespace AnchorGame
             if (destroyOnObstacle && !other.isTrigger)
             {
                 OnHitObstacle();
+            }
+        }
+
+        private void OnHitCheckpoint(Checkpoint checkpoint)
+        {
+            _hasHit = true;
+            if (_rb != null) _rb.linearVelocity = Vector2.zero;
+
+            if (_owner != null)
+            {
+                _owner.OnAnchorHitCheckpoint(checkpoint, transform.position);
+            }
+
+            Debug.Log($"[Anchor] 命中存档点 {checkpoint.name}");
+
+            if (destroyOnAttach)
+            {
+                Destroy(gameObject, 0.05f);
             }
         }
 
