@@ -11,7 +11,7 @@ namespace AnchorGame
         [SerializeField] private PlayerShip player;
 
         [Header("预测")]
-        [SerializeField] private float predictionDistance = 12f;
+        [SerializeField] private float predictionDistance = 30f;
         [SerializeField] private int sortingOrder = 25;
 
         [Header("脉冲能量束")]

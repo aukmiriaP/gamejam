@@ -43,6 +43,7 @@ Assets/Scripts/World/CelestialBody.cs
 - 抵达 Checkpoint 钩锁命中点后，会走正常存档点激活流程。
 - 锚超出射程、命中障碍或释放后会销毁。
 - 锚可以命中氧气补给道具，命中后直接收集。
+- 锚链视觉已支持非 Shader 的能量束样式：核心线 + 外发光线，锚点核心 / 外发光和拖尾颜色、宽度、脉冲强度都可通过 `Assets/Art/VFX/AnchorEnergyStyle.asset` 调整。
 
 当前 `PlayerShip` 可调参数：
 
@@ -65,7 +66,7 @@ Assets/Scripts/Player/TrajectoryPredictor.cs
 已实现：
 
 - 玩家处于绕行状态时显示切线方向预测线。
-- 用虚线材质显示释放后的飞行方向。
+- 用可调参数的脉冲能量束样式显示释放后的飞行方向：核心线、外发光和流动脉冲会沿切线指示飞出方向，并随距离逐渐 fade。基础能量束可在 `Solid` 直线和 `Dashed` 虚线之间切换，参数通过 `Assets/Art/VFX/TrajectoryEnergyStyle.asset` 调整。
 
 ### 摄像机跟随与边界限制
 
