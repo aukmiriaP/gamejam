@@ -41,10 +41,12 @@ public class PlayerShip : MonoBehaviour
     [Header("输入设置")]
     [Tooltip("发射/保持锚的按键")]
     public KeyCode fireKey = KeyCode.Mouse0;
+    public AudioClip shootSFX;
 
     [Header("测试控制")]
     [Tooltip("WASD 测试推力 (N)，0 = 禁用")]
     public float testThrustForce = 0f;
+
 
     // ── 运行时状态 ────────────────────────────────
     public enum ShipState
@@ -260,6 +262,11 @@ public class PlayerShip : MonoBehaviour
             speed: anchorSpeed,
             maxRange: anchorMaxRange
         );
+
+        if (AudioManager.Instance != null && shootSFX != null)
+        {
+            AudioManager.Instance.PlaySFX(shootSFX);
+        }
 
         _activeAnchor = anchor;
         _currentState = ShipState.Anchoring;
