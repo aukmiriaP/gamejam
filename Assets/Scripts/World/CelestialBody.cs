@@ -13,7 +13,7 @@ namespace AnchorGame
     public class CelestialBody : MonoBehaviour
     {
         [Header("天体属性")]
-        [Tooltip("天体半径（应与 CircleCollider2D 的 radius 一致）")]
+        [Tooltip("天体世界半径。CircleCollider2D 会根据 Transform Scale 自动换算本地半径")]
         public float radius = 2f;
 
         [Tooltip("天体引力强度 (0 = 无引力, 仅作为锚的附着点)")]
@@ -49,9 +49,17 @@ namespace AnchorGame
 
         private void SyncColliderRadius()
         {
-            if (_collider != null && Mathf.Abs(_collider.radius - radius) > 0.001f)
+            if (_collider == null) return;
+
+            float maxWorldScale = Mathf.Max(
+                Mathf.Abs(transform.lossyScale.x),
+                Mathf.Abs(transform.lossyScale.y)
+            );
+            float localRadius = Mathf.Max(0.01f, radius) / Mathf.Max(0.0001f, maxWorldScale);
+
+            if (Mathf.Abs(_collider.radius - localRadius) > 0.001f)
             {
-                _collider.radius = radius;
+                _collider.radius = localRadius;
             }
         }
 
