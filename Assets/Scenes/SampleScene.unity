@@ -1639,6 +1639,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AnchorGame.Checkpoint
   triggerRadius: 1.25
   respawnFacingRight: 1
+  finalCheckpoint: 1
   inactiveColor: {r: 0, g: 0.9, b: 0.9, a: 0.35}
   activeColor: {r: 0, g: 1, b: 0.75, a: 0.85}
   emitGuidanceRipples: 1
@@ -2428,6 +2429,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AnchorGame.Checkpoint
   triggerRadius: 1.25
   respawnFacingRight: 1
+  finalCheckpoint: 0
   inactiveColor: {r: 0, g: 0.9, b: 0.9, a: 0.35}
   activeColor: {r: 0, g: 1, b: 0.75, a: 0.85}
   emitGuidanceRipples: 0
@@ -4292,6 +4294,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AnchorGame.Checkpoint
   triggerRadius: 1.25
   respawnFacingRight: 1
+  finalCheckpoint: 0
   inactiveColor: {r: 0, g: 0.9, b: 0.9, a: 0.35}
   activeColor: {r: 0, g: 1, b: 0.75, a: 0.85}
   emitGuidanceRipples: 0
