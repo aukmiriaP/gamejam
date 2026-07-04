@@ -119,6 +119,59 @@ Assets/Scripts/World/Checkpoint.cs
 
 当前 `Checkpoint_3` 已设置为终点并开启引导波纹。
 
+### 虫洞机制
+
+核心脚本：
+
+```text
+Assets/Scripts/World/Wormhole.cs
+Assets/Scripts/Player/PlayerShip.cs
+Assets/Scripts/Anchor/AnchorProjectile.cs
+```
+
+资源：
+
+```text
+Assets/Art/Sprites/BugHole/BugHole.png
+Assets/Prefabs/Wormholes/BugHole_Entrance.prefab
+Assets/Prefabs/Wormholes/BugHole_Exit.prefab
+```
+
+已实现：
+
+- 虫洞分为 `Entrance` 和 `Exit`，场景实例之间通过 `linkedWormhole` 互相绑定。
+- 玩家直接经过入口或出口时，会传送到绑定的另一端。
+- 锚命中虫洞时，玩家进入 `PullingToWormhole` 状态，沿钩锁方向直线靠近，不做圆周运动。
+- 玩家接触虫洞后触发传送，传送前后的速度大小和方向保持不变。
+- 传送后有短冷却，避免刚到另一端时立即反向传送。
+- 当前 `Level_01` 已放置一对测试虫洞实例。
+
+### 黑洞机制
+
+核心脚本：
+
+```text
+Assets/Scripts/World/BlackHole.cs
+Assets/Scripts/Player/PlayerShip.cs
+```
+
+资源：
+
+```text
+Assets/Art/Sprites/BlackHole/BlackHole.png
+Assets/Prefabs/BlackHoles/BlackHole_Front.prefab
+```
+
+已实现：
+
+- 当前先使用黑洞正视图 `BlackHole_FrontView`。
+- 黑洞会对 `attractionRadius` 范围内的玩家产生朝向中心的吸力。
+- 吸力会随距离靠近逐渐增强，并受 `maxAttractedSpeed` 限制。
+- 为了避免玩家高速掠过时几乎感受不到吸力，黑洞还会通过 `radialBrakeStrength` 削弱远离中心的速度分量，并通过 `steeringStrength` 将速度方向逐渐扭向中心。
+- 玩家进入 `consumeRadius` 后判定死亡，从当前存档点重生。
+- 玩家被黑洞吸引时会脱离当前锚定 / 牵引状态，避免多个移动机制同时抢控制。
+- 当前 `Level_01` 已放置一个测试黑洞实例。
+
 ### 关卡切换
 
 核心脚本：

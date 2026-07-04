@@ -21,7 +21,7 @@ MonoBehaviour:
   endWidthMultiplier: 0.2
   beamPulseSpeed: 2.4
   beamPulseAmount: 0.12
-  linePattern: 0
+  linePattern: 1
   dashWorldPitch: 1.15
   dashFillRatio: 0.52
   pulseCount: 4

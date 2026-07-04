@@ -183,6 +183,13 @@ namespace AnchorGame
                 return;
             }
 
+            Wormhole wormhole = other.GetComponent<Wormhole>();
+            if (wormhole != null)
+            {
+                OnHitWormhole(wormhole);
+                return;
+            }
+
             CelestialBody body = other.GetComponent<CelestialBody>();
             if (body != null)
             {
@@ -193,6 +200,24 @@ namespace AnchorGame
             if (destroyOnObstacle && !other.isTrigger)
             {
                 OnHitObstacle();
+            }
+        }
+
+        private void OnHitWormhole(Wormhole wormhole)
+        {
+            _hasHit = true;
+            if (_rb != null) _rb.linearVelocity = Vector2.zero;
+
+            if (_owner != null)
+            {
+                _owner.OnAnchorHitWormhole(wormhole, transform.position);
+            }
+
+            Debug.Log($"[Anchor] 命中虫洞 {wormhole.name}");
+
+            if (destroyOnAttach)
+            {
+                Destroy(gameObject, 0.05f);
             }
         }
 
