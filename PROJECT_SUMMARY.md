@@ -157,6 +157,7 @@ Assets/Scripts/World/DeathZone.cs
 
 ```text
 Assets/Scripts/Player/PlayerOxygen.cs
+Assets/Scripts/Player/PlayerOxygenBarUI.cs
 Assets/Scripts/World/OxygenRegion.cs
 ```
 
@@ -165,6 +166,11 @@ Assets/Scripts/World/OxygenRegion.cs
 - 玩家进入氧气挑战区域后开始消耗氧气。
 - 左上角显示 O2 条。
 - 氧气随时间持续减少。
+- 氧气 UI 已从临时 `OnGUI` 条升级为运行时代码生成的 Canvas 分段荧光条：
+  - 青蓝外框。
+  - 分段电池格。
+  - 蓝色外发光脉冲。
+  - 低氧时切换红色闪烁。
 - 氧气耗尽后，玩家从当前存档点重生。
 - 当前设计中，进入氧气区域会把当前复活点设为 `Checkpoint_2`，保证区域 3 失败后从第二个存档点重新开始。
 - 抵达 `Checkpoint_3` 后氧气挑战结束并重置氧气。

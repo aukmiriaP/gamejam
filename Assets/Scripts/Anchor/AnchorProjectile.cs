@@ -31,6 +31,9 @@ namespace AnchorGame
         [Tooltip("锚命中非天体障碍物时是否销毁")]
         public bool destroyOnObstacle = true;
 
+        [Tooltip("钩锁线显示层级。背景图建议使用 -100，行星 0-10，钩锁保持更高避免被遮挡")]
+        public int ropeSortingOrder = 25;
+
         private PlayerShip _owner;
         private Rigidbody2D _rb;
         private float _traveledDistance;
@@ -60,6 +63,10 @@ namespace AnchorGame
             transform.rotation = Quaternion.Euler(0f, 0f, angle);
 
             _lineRenderer = GetComponent<LineRenderer>();
+            if (_lineRenderer != null)
+            {
+                _lineRenderer.sortingOrder = ropeSortingOrder;
+            }
             _trailRenderer = GetComponent<TrailRenderer>();
         }
 

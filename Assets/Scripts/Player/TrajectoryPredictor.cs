@@ -8,6 +8,7 @@ namespace AnchorGame
         [SerializeField] private PlayerShip player;
         [SerializeField] private float predictionDistance = 30f;
         [SerializeField] private float dashWorldPitch = 0.5f;
+        [SerializeField] private int sortingOrder = 25;
 
         private LineRenderer line;
 
@@ -16,6 +17,7 @@ namespace AnchorGame
             line = GetComponent<LineRenderer>();
             line.positionCount = 2;
             line.textureMode = LineTextureMode.Tile;
+            line.sortingOrder = sortingOrder;
 
             var material = new Material(Shader.Find("Sprites/Default"));
             material.mainTexture = CreateDashTexture();
