@@ -928,6 +928,7 @@ GameObject:
   - component: {fileID: 525510507}
   - component: {fileID: 525510509}
   - component: {fileID: 525510510}
+  - component: {fileID: 525510511}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -984,8 +985,8 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 10
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 0.1, g: 0.9, b: 0.85, a: 1}
+  m_Sprite: {fileID: -2311659948842064771, guid: 34b8581a7eaf4084a95ae749313243f6, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1004,7 +1005,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -19.21, y: 2.43, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 1}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1686334356}
@@ -1123,8 +1124,41 @@ MonoBehaviour:
   drainPerSecond: 5
   oxygenActive: 0
   finishCheckpointName: Checkpoint_3
+  showLegacyOnGui: 0
   barPosition: {x: 24, y: 24}
   barSize: {x: 220, y: 18}
+  shipRenderer: {fileID: 525510505}
+  oxygenHighSprite: {fileID: -2311659948842064771, guid: 34b8581a7eaf4084a95ae749313243f6, type: 3}
+  oxygenMediumSprite: {fileID: -6287787046888575383, guid: 34b8581a7eaf4084a95ae749313243f6, type: 3}
+  oxygenLowSprite: {fileID: 7364682651488144517, guid: 34b8581a7eaf4084a95ae749313243f6, type: 3}
+  mediumOxygenThreshold: 0.5
+  lowOxygenThreshold: 0.2
+--- !u!114 &525510511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 525510503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c6a88b85a041e74d9d1b0049b1f7c11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnchorGame.PlayerOxygenBarUI
+  oxygen: {fileID: 525510510}
+  showOnlyWhenOxygenActive: 1
+  anchoredPosition: {x: 48, y: -76}
+  size: {x: 58, y: 174}
+  segmentCount: 8
+  segmentGap: 5
+  frameThickness: 3
+  frameColor: {r: 0.18, g: 1, b: 1, a: 0.95}
+  fillColor: {r: 0.05, g: 0.95, b: 1, a: 0.9}
+  lowFillColor: {r: 1, g: 0.2, b: 0.1, a: 0.95}
+  emptyColor: {r: 0.02, g: 0.25, b: 0.28, a: 0.45}
+  glowColor: {r: 0, g: 0.85, b: 1, a: 0.28}
+  glowPulseSpeed: 2.4
+  lowOxygenBlinkSpeed: 8
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -1763,6 +1797,7 @@ MonoBehaviour:
   player: {fileID: 525510509}
   predictionDistance: 30
   dashWorldPitch: 0.5
+  sortingOrder: 25
 --- !u!120 &1686334358
 LineRenderer:
   serializedVersion: 3
@@ -1810,7 +1845,7 @@ LineRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 25
   m_MaskInteraction: 0
   m_Positions:
   - {x: 0, y: 0, z: 0}

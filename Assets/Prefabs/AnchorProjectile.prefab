@@ -206,7 +206,7 @@ LineRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 25
   m_MaskInteraction: 0
   m_Positions:
   - {x: 0, y: 0, z: 0}
@@ -406,3 +406,4 @@ MonoBehaviour:
   attachToSurface: 1
   destroyOnAttach: 0
   destroyOnObstacle: 1
+  ropeSortingOrder: 25
