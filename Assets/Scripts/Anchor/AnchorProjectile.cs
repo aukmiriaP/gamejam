@@ -30,6 +30,9 @@ namespace AnchorGame
         [Tooltip("锚命中非天体障碍物时是否销毁")]
         public bool destroyOnObstacle = true;
 
+        [Tooltip("插锚音效")]
+        public AudioClip hitSFX;
+
         private PlayerShip _owner;
         private Rigidbody2D _rb;
         private float _traveledDistance;
@@ -144,6 +147,10 @@ namespace AnchorGame
                 _owner.OnAnchorHitCelestial(body, _direction * _speed);
             }
 
+            if (AudioManager.Instance != null && hitSFX != null)
+            {
+                AudioManager.Instance.PlaySFX(hitSFX);
+            }
             Debug.Log($"[Anchor] 命中天体 {body.name}");
 
             if (destroyOnAttach)

@@ -42,8 +42,20 @@ namespace AnchorGame
         [Tooltip("持续按住加速键，达到最大角加速度所需的时间 (秒)。加速度本身从 0 缓慢爬升到这个上限，模拟引擎先慢后快的提速感")]
         public float accelRampUpTime = 1.5f;
 
+<<<<<<< Updated upstream
         [Tooltip("最大角加速度 (弧度/秒²)，加速爬升到头之后的恒定加速度")]
         public float maxOrbitAccel = 12f;
+=======
+        [Tooltip("发射音效")]
+        public AudioClip shootSFX;
+        [Tooltip("坠毁音效")]
+        public AudioClip crashSFX;
+        [Tooltip("插锚音效")]
+        public AudioClip hitSFX;
+
+        [Tooltip("靠近天体时释放速度的增长曲线。0=线性，0.5=前段增长更明显，1=标准曲线，2=后段增长更明显")]
+        public float orbitSpeedGainExponent = 0.5f;
+>>>>>>> Stashed changes
 
         [Tooltip("刹车（反方向输入）逼近 0 转速的响应速度，越大刹车越干脆")]
         public float brakeResponsiveness = 3f;
@@ -226,6 +238,11 @@ namespace AnchorGame
                 speed: anchorSpeed,
                 maxRange: anchorMaxRange
             );
+
+            if (AudioManager.Instance != null && shootSFX != null)
+            {
+                AudioManager.Instance.PlaySFX(shootSFX);
+            }
 
             _activeAnchor = anchor;
             _currentState = ShipState.Anchoring;
@@ -411,7 +428,65 @@ namespace AnchorGame
             Vector2 radial = toShip.normalized;
             Vector2 tangent = new Vector2(-radial.y, radial.x) * _orbitDirection;
 
+<<<<<<< Updated upstream
             return tangent * (_orbitAngularSpeed * _orbitRadius);
+=======
+            return tangent * _orbitTangentSpeed;
+        }
+
+        private void ReleaseCheckpointPull()
+        {
+            if (_activeAnchor != null)
+            {
+                _activeAnchor.Terminate();
+                _activeAnchor = null;
+            }
+
+            _pullingCheckpoint = null;
+            _orbitingBody = null;
+            _currentState = ShipState.FreeFlight;
+            _anchorCooldownTimer = anchorCooldown;
+
+            if (_velocity.sqrMagnitude < moveSpeed * moveSpeed * 0.25f)
+            {
+                _velocity = _velocity.sqrMagnitude > 0.0001f
+                    ? _velocity.normalized * moveSpeed
+                    : Vector2.right * moveSpeed;
+            }
+
+            _rb.linearVelocity = _velocity;
+            Debug.Log($"[Ship] 释放存档点钩锁，继续直线飞行: {_velocity}");
+        }
+
+        private void CrashIntoOrbitingBody()
+        {
+            string bodyName = _orbitingBody != null ? _orbitingBody.name : "天体";
+            
+            Debug.Log($"[Ship] 撞上 {bodyName}，从当前存档点重生");
+            RespawnAtCheckpoint();
+        }
+
+        private float GetOrbitImpactRadius()
+        {
+            if (_orbitingBody == null) return 0f;
+
+            return Mathf.Max(0f, _orbitingBody.radius)
+                + Mathf.Max(0f, _shipCollisionRadius)
+                + Mathf.Max(0f, planetImpactPadding);
+        }
+
+        private float EstimateShipCollisionRadius()
+        {
+            Collider2D shipCollider = GetComponentInChildren<Collider2D>();
+            if (shipCollider == null)
+            {
+                return Mathf.Max(0.01f, fallbackShipCollisionRadius);
+            }
+
+            Vector3 extents = shipCollider.bounds.extents;
+            float radius = Mathf.Max(extents.x, extents.y);
+            return Mathf.Max(0.01f, radius);
+>>>>>>> Stashed changes
         }
 
         public void OnAnchorDestroyed()
@@ -534,6 +609,11 @@ namespace AnchorGame
             _rb.position = spawnPosition;
             transform.position = spawnPosition;
             _rb.linearVelocity = Vector2.zero;
+
+            if (AudioManager.Instance != null && shootSFX != null)
+            {
+                AudioManager.Instance.PlaySFX(crashSFX);
+            }
 
             Debug.Log(_activeCheckpoint != null
                 ? $"[Ship] 从存档点重生并等待出发: {_activeCheckpoint.name}"

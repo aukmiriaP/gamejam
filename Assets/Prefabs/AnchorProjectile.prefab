@@ -406,3 +406,4 @@ MonoBehaviour:
   attachToSurface: 1
   destroyOnAttach: 0
   destroyOnObstacle: 1
+  hitSFX: {fileID: 8300000, guid: 496c6534fcf5a3a4e88d53756e489ee0, type: 3}

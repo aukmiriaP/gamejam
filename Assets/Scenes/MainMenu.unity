@@ -851,7 +851,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faf65865413cb89488b3e1bb583755e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NewMonoBehaviourScript
-  targetSceneName: SampleScene
+  targetSceneName: TutorialLevel
 --- !u!1 &1584772947
 GameObject:
   m_ObjectHideFlags: 0
