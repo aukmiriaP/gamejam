@@ -31,6 +31,8 @@ namespace AnchorGame
         [Tooltip("锚命中非天体障碍物时是否销毁")]
         public bool destroyOnObstacle = true;
 
+        [Tooltip("插锚音效")]
+        public AudioClip hitSFX;
         [Tooltip("钩锁线显示层级。背景图建议使用 -100，行星 0-10，钩锁保持更高避免被遮挡")]
         public int ropeSortingOrder = 25;
 
@@ -274,6 +276,10 @@ namespace AnchorGame
                 _owner.OnAnchorHitCelestial(body, _direction * _speed);
             }
 
+            if (AudioManager.Instance != null && hitSFX != null)
+            {
+                AudioManager.Instance.PlaySFX(hitSFX);
+            }
             Debug.Log($"[Anchor] 命中天体 {body.name}");
 
             if (destroyOnAttach)

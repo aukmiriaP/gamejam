@@ -44,6 +44,15 @@ namespace AnchorGame
         [Tooltip("锚命中天体后，飞船被拉向天体的半径缩短速度 (m/s)")]
         public float anchorChainShortenSpeed = 1.4f;
 
+        [Tooltip("最大角加速度 (弧度/秒²)，加速爬升到头之后的恒定加速度")]
+        public float maxOrbitAccel = 12f;
+        [Tooltip("发射音效")]
+        public AudioClip shootSFX;
+        [Tooltip("坠毁音效")]
+        public AudioClip crashSFX;
+        [Tooltip("插锚音效")]
+        public AudioClip hitSFX;
+
         [Tooltip("靠近天体时释放速度的增长曲线。0=线性，0.5=前段增长更明显，1=标准曲线，2=后段增长更明显")]
         public float orbitSpeedGainExponent = 0.5f;
 
@@ -295,6 +304,11 @@ namespace AnchorGame
                 speed: anchorSpeed,
                 maxRange: anchorMaxRange
             );
+
+            if (AudioManager.Instance != null && shootSFX != null)
+            {
+                AudioManager.Instance.PlaySFX(shootSFX);
+            }
 
             _activeAnchor = anchor;
             _currentState = ShipState.Anchoring;
@@ -672,6 +686,7 @@ namespace AnchorGame
             Vector3 extents = shipCollider.bounds.extents;
             float radius = Mathf.Max(extents.x, extents.y);
             return Mathf.Max(0.01f, radius);
+
         }
 
         public void OnAnchorDestroyed()
@@ -848,6 +863,11 @@ namespace AnchorGame
             _rb.position = spawnPosition;
             transform.position = spawnPosition;
             _rb.linearVelocity = Vector2.zero;
+
+            if (AudioManager.Instance != null && shootSFX != null)
+            {
+                AudioManager.Instance.PlaySFX(crashSFX);
+            }
 
             Debug.Log(_activeCheckpoint != null
                 ? $"[Ship] 从存档点重生并等待出发: {_activeCheckpoint.name}"
