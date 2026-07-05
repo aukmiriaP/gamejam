@@ -2233,7 +2233,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
   sfxSource: {fileID: 1191728195}
   bgmSource: {fileID: 1191728197}
-  backgroundMusic: {fileID: 8300000, guid: a2c2b468dcb145243b45dca8fca82f29, type: 3}
+  backgroundMusic: {fileID: 8300000, guid: c4caa1f78ae53494fb0005b8ee667494, type: 3}
   playBgmOnAwake: 1
   bgmVolume: 0.6
 --- !u!82 &1191728195
@@ -2359,7 +2359,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: a2c2b468dcb145243b45dca8fca82f29, type: 3}
+  m_Resource: {fileID: 8300000, guid: c4caa1f78ae53494fb0005b8ee667494, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.6
   m_Pitch: 1

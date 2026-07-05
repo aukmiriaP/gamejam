@@ -56,6 +56,19 @@ namespace AnchorGame
                 return;
             }
 
+            if (_ship != null && _ship.CurrentState == PlayerShip.ShipState.WaitingAtCheckpoint)
+            {
+                if (_oxygen < maxOxygen)
+                {
+                    ResetOxygen();
+                }
+                else
+                {
+                    UpdateOxygenSprite();
+                }
+                return;
+            }
+
             _oxygen = Mathf.Max(0f, _oxygen - drainPerSecond * Time.deltaTime);
             UpdateOxygenSprite();
 
@@ -117,6 +130,8 @@ namespace AnchorGame
 
         public void OnCheckpointReached(Checkpoint checkpoint)
         {
+            ResetOxygen();
+
             if (checkpoint != null && checkpoint.name == finishCheckpointName)
             {
                 EndChallenge();
