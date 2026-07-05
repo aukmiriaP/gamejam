@@ -1,6 +1,6 @@
 # CIGA2026 GameJam 项目交接说明
 
-更新时间：2026-07-04
+更新时间：2026-07-05
 
 ## 项目定位
 
@@ -39,6 +39,7 @@ Assets/Scripts/World/CelestialBody.cs
 - 玩家需要在撞上天体前再次点击左键释放锚。
 - 释放时会沿当前切线方向飞出，释放时机决定飞出方向和速度。
 - 撞上天体后会从当前存档点重生。
+- 玩家碰到非当前锚定的 `CelestialBody` 时会脱离当前锚 / 牵引状态并被反弹，避免圆周运动中穿过其他行星。
 - 锚命中 `Checkpoint` 后，玩家进入直线钩锁牵引状态，不绕行、不受行星引力，沿钩锁方向靠近命中点。
 - 抵达 Checkpoint 钩锁命中点后，会走正常存档点激活流程。
 - 锚超出射程、命中障碍或释放后会销毁。
@@ -53,6 +54,11 @@ orbitSpeedGainExponent
 maxOrbitReleaseSpeed
 planetImpactPadding
 fallbackShipCollisionRadius
+planetBounceSpeedMultiplier
+planetBounceMinSpeed
+planetBounceMaxSpeed
+planetBounceSeparationPadding
+planetBounceCooldown
 ```
 
 ### 轨迹预测
@@ -269,6 +275,8 @@ Assets/Scripts/World/OxygenPickupSpawner.cs
 ```text
 Assets/Prefabs/OxygenPickup.prefab
 Assets/Art/OxygenPickup.png
+Assets/Art/Sprites/Pickups/OxygenPickup_RoundedCore.png
+Assets/Art/Sprites/Pickups/OxygenPickup_SoftGlow.png
 ```
 
 已实现：
@@ -277,6 +285,8 @@ Assets/Art/OxygenPickup.png
 - 锚命中氧气补给后也会收集。
 - 区域内有随机氧气补给刷新器。
 - 同时存在数量可由 `maxAlive` 控制。
+- 氧气补给已整理为 Prefab，视觉由圆角蓝色十字核心、内层柔光和外层微蓝光组成。
+- 收集后会隐藏根节点和所有子级 SpriteRenderer，避免核心消失但光晕残留。
 
 ## 当前场景结构
 

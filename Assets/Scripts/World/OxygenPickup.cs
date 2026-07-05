@@ -9,7 +9,7 @@ namespace AnchorGame
         [SerializeField] private float respawnDelay = 8f;
 
         private CircleCollider2D _collider;
-        private SpriteRenderer _spriteRenderer;
+        private SpriteRenderer[] _spriteRenderers;
         private float _respawnTimer;
         private bool _available = true;
 
@@ -17,7 +17,7 @@ namespace AnchorGame
         {
             _collider = GetComponent<CircleCollider2D>();
             _collider.isTrigger = true;
-            _spriteRenderer = GetComponent<SpriteRenderer>();
+            _spriteRenderers = GetComponentsInChildren<SpriteRenderer>(true);
         }
 
         private void Update()
@@ -57,7 +57,12 @@ namespace AnchorGame
         {
             _available = available;
             if (_collider != null) _collider.enabled = available;
-            if (_spriteRenderer != null) _spriteRenderer.enabled = available;
+            if (_spriteRenderers == null) return;
+
+            foreach (SpriteRenderer spriteRenderer in _spriteRenderers)
+            {
+                if (spriteRenderer != null) spriteRenderer.enabled = available;
+            }
         }
     }
 }
