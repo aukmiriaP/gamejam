@@ -406,5 +406,19 @@ MonoBehaviour:
   attachToSurface: 1
   destroyOnAttach: 0
   destroyOnObstacle: 1
+  hitSFX: {fileID: 8300000, guid: 496c6534fcf5a3a4e88d53756e489ee0, type: 3}
   ropeSortingOrder: 25
   visualStyle: {fileID: 11400000, guid: 1d52f3546d8d4406be96fedc920ce337, type: 2}
+  useEnergyRopeStyle: 1
+  ropeCoreColor: {r: 0.35, g: 1, b: 1, a: 0.95}
+  ropeGlowColor: {r: 0, g: 0.65, b: 1, a: 0.34}
+  ropeCoreWidth: 0.045
+  ropeGlowWidth: 0.18
+  ropePulseSpeed: 7
+  ropePulseAmount: 0.18
+  anchorHeadColor: {r: 0.55, g: 1, b: 1, a: 1}
+  anchorHeadGlowColor: {r: 0, g: 0.75, b: 1, a: 0.38}
+  anchorHeadGlowScale: 1.75
+  anchorTrailColor: {r: 0, g: 0.8, b: 1, a: 0.58}
+  anchorTrailTime: 0.22
+  anchorTrailWidth: 0.14
