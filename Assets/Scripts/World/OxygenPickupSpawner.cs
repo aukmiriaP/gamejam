@@ -38,7 +38,7 @@ namespace AnchorGame
             );
 
             OxygenPickup pickup = Instantiate(pickupPrefab, transform.position + offset, Quaternion.identity);
-            pickup.name = "Region3_OxygenPickup";
+            pickup.name = $"{name}_OxygenPickup";
         }
 
         private int CountAlivePickups()

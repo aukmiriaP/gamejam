@@ -232,7 +232,7 @@ namespace AnchorGame
                 height
             );
 
-            GUI.ModalWindow(7341, rect, DrawCompletionWindow, "教学关完成");
+            GUI.ModalWindow(7341, rect, DrawCompletionWindow, LevelManager.GetCompletionWindowTitle());
         }
 
         private static void DrawCompletionWindow(int windowId)
@@ -248,7 +248,7 @@ namespace AnchorGame
             }
 
             GUILayout.Space(8f);
-            GUILayout.Label("恭喜已完成教学，是否进入下一关？");
+            GUILayout.Label(LevelManager.GetCompletionMessage());
             GUILayout.Space(8f);
             GUILayout.Label($"存档点点亮情况：{activatedCount}/{checkpoints.Count}");
             GUILayout.Space(10f);
@@ -258,12 +258,13 @@ namespace AnchorGame
 
             GUILayout.FlexibleSpace();
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("继续停留", GUILayout.Height(34f)))
+            if (GUILayout.Button("返回主界面", GUILayout.Height(34f)))
             {
                 HideCompletionWindow();
+                LevelManager.LoadMainMenu();
             }
 
-            if (GUILayout.Button("进入下一关", GUILayout.Height(34f)))
+            if (LevelManager.HasNextLevel() && GUILayout.Button("进入下一关", GUILayout.Height(34f)))
             {
                 HideCompletionWindow();
                 LevelManager.LoadNextLevel();

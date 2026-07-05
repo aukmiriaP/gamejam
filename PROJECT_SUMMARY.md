@@ -248,18 +248,21 @@ Assets/Scripts/World/AsteroidShard.cs
 
 ```text
 Assets/Prefabs/AsteroidShard.prefab
+Assets/Prefabs/AsteroidShards/AsteroidShard_01.prefab ... AsteroidShard_06.prefab
 Assets/Art/AsteroidShard.png
+Assets/Art/Sprites/Rocks/Rocks.png
 ```
 
 已实现：
 
 - 上下危险区各有碎石流发射器。
-- 发射器会随机生成碎石。
+- 发射器会随机生成碎石，并从 `shardPrefabs` 数组中随机选择不同外观的碎石 prefab。
 - 碎石向对侧移动。
 - 玩家碰到碎石后：
   - 扣除氧气。
   - 受到击退。
   - 如果正在锚定或绕行，会脱离当前锚状态。
+- `AsteroidShard` 支持静态摆放：未通过 `Launch` 发射的碎石不会按 lifetime 自动销毁，适合后续手动摆放静态碎石群。
 
 ### 氧气补给
 

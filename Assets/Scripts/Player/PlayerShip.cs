@@ -864,7 +864,7 @@ namespace AnchorGame
             transform.position = spawnPosition;
             _rb.linearVelocity = Vector2.zero;
 
-            if (AudioManager.Instance != null && shootSFX != null)
+            if (AudioManager.Instance != null && crashSFX != null)
             {
                 AudioManager.Instance.PlaySFX(crashSFX);
             }
