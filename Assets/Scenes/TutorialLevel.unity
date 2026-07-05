@@ -2313,6 +2313,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1379923414934539656, guid: 9726386fd037dd14cb09639f2b58d107, type: 3}
+      propertyPath: hitSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 496c6534fcf5a3a4e88d53756e489ee0, type: 3}
+    - target: {fileID: 1379923414934539656, guid: 9726386fd037dd14cb09639f2b58d107, type: 3}
+      propertyPath: crashSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 0637df6e7332694429c8ef38a38bff32, type: 3}
+    - target: {fileID: 1379923414934539656, guid: 9726386fd037dd14cb09639f2b58d107, type: 3}
+      propertyPath: shootSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: ffdb663c89c4dbd459fe00a388d9904e, type: 3}
     - target: {fileID: 2694096111170536847, guid: 9726386fd037dd14cb09639f2b58d107, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 

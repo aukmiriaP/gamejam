@@ -365,6 +365,10 @@ MonoBehaviour:
   anchorSpeed: 15
   anchorCooldown: 0.3
   anchorChainShortenSpeed: 0.7
+  maxOrbitAccel: 12
+  shootSFX: {fileID: 0}
+  crashSFX: {fileID: 0}
+  hitSFX: {fileID: 0}
   orbitSpeedGainExponent: 2
   maxOrbitReleaseSpeed: 15
   planetImpactPadding: 0.08
