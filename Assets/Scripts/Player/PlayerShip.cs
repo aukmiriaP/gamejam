@@ -864,6 +864,12 @@ namespace AnchorGame
             transform.position = spawnPosition;
             _rb.linearVelocity = Vector2.zero;
 
+            PlayerOxygen oxygen = GetComponent<PlayerOxygen>();
+            if (oxygen != null)
+            {
+                oxygen.ResetOxygen();
+            }
+
             if (AudioManager.Instance != null && crashSFX != null)
             {
                 AudioManager.Instance.PlaySFX(crashSFX);
