@@ -52,7 +52,7 @@ namespace AnchorGame
         public AudioClip crashSFX;
         [Tooltip("插锚音效")]
         public AudioClip hitSFX;
-        
+
         [Tooltip("靠近天体时释放速度的增长曲线。0=线性，0.5=前段增长更明显，1=标准曲线，2=后段增长更明显")]
         public float orbitSpeedGainExponent = 0.5f;
 
@@ -64,6 +64,22 @@ namespace AnchorGame
 
         [Tooltip("找不到玩家碰撞体时，用于撞星判定的飞船半径兜底值 (m)")]
         public float fallbackShipCollisionRadius = 0.35f;
+
+        [Header("星球碰撞反弹")]
+        [Tooltip("撞到非当前锚定星球时，反弹速度相对碰撞前速度的倍率")]
+        public float planetBounceSpeedMultiplier = 0.85f;
+
+        [Tooltip("撞到非当前锚定星球后的最小反弹速度 (m/s)")]
+        public float planetBounceMinSpeed = 5f;
+
+        [Tooltip("撞到非当前锚定星球后的最大反弹速度 (m/s)")]
+        public float planetBounceMaxSpeed = 14f;
+
+        [Tooltip("反弹后额外推出星球表面的距离，避免连续触发或卡在星球内")]
+        public float planetBounceSeparationPadding = 0.08f;
+
+        [Tooltip("同一个星球反弹后的短暂保护时间，避免 OnTriggerStay 每帧重复反弹")]
+        public float planetBounceCooldown = 0.12f;
 
         [Header("存档点牵引")]
         [Tooltip("锚命中存档点后，飞船沿钩锁方向直线靠近的速度 (m/s)")]
@@ -127,6 +143,8 @@ namespace AnchorGame
         private Checkpoint _stoppedCheckpoint;
         private bool _waitingCanLaunch;
         private bool _waitForMouseReleaseBeforeLaunch;
+        private CelestialBody _lastBouncedPlanet;
+        private float _planetBounceCooldownTimer;
 
         private void Awake()
         {
@@ -267,6 +285,8 @@ namespace AnchorGame
                 _anchorCooldownTimer -= Time.deltaTime;
             if (_wormholeCooldownTimer > 0f)
                 _wormholeCooldownTimer -= Time.deltaTime;
+            if (_planetBounceCooldownTimer > 0f)
+                _planetBounceCooldownTimer -= Time.deltaTime;
         }
 
         private void FireAnchor()
@@ -856,7 +876,87 @@ namespace AnchorGame
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            Debug.Log($"[Ship] 玩家碰撞体触发: {other.name}");
+            HandlePlanetContact(other);
+        }
+
+        private void OnTriggerStay2D(Collider2D other)
+        {
+            HandlePlanetContact(other);
+        }
+
+        private void HandlePlanetContact(Collider2D other)
+        {
+            CelestialBody body = other.GetComponentInParent<CelestialBody>();
+            if (body == null) return;
+            if (body == _orbitingBody) return;
+            if (_currentState == ShipState.WaitingAtCheckpoint) return;
+            if (_planetBounceCooldownTimer > 0f && body == _lastBouncedPlanet) return;
+
+            BounceOffPlanet(body);
+        }
+
+        private void BounceOffPlanet(CelestialBody body)
+        {
+            Vector2 center = body.Center;
+            Vector2 currentPosition = _rb.position;
+            Vector2 normal = currentPosition - center;
+            if (normal.sqrMagnitude < 0.0001f)
+            {
+                Vector2 fallbackVelocity = _velocity.sqrMagnitude > 0.0001f ? _velocity : _rb.linearVelocity;
+                normal = fallbackVelocity.sqrMagnitude > 0.0001f ? -fallbackVelocity.normalized : Vector2.up;
+            }
+            else
+            {
+                normal.Normalize();
+            }
+
+            Vector2 incomingVelocity = _velocity.sqrMagnitude > 0.0001f ? _velocity : _rb.linearVelocity;
+            if (_currentState == ShipState.Orbiting && _orbitingBody != null)
+            {
+                incomingVelocity = GetOrbitTangent();
+            }
+            if (incomingVelocity.sqrMagnitude < 0.0001f)
+            {
+                incomingVelocity = normal * moveSpeed;
+            }
+
+            float speed = Mathf.Clamp(
+                incomingVelocity.magnitude * Mathf.Max(0f, planetBounceSpeedMultiplier),
+                Mathf.Max(0.01f, planetBounceMinSpeed),
+                Mathf.Max(planetBounceMinSpeed, planetBounceMaxSpeed)
+            );
+            Vector2 reflectedVelocity = Vector2.Reflect(incomingVelocity.normalized, normal).normalized * speed;
+            if (Vector2.Dot(reflectedVelocity, normal) < speed * 0.25f)
+            {
+                reflectedVelocity = Vector2.Lerp(reflectedVelocity.normalized, normal, 0.5f).normalized * speed;
+            }
+
+            if (_activeAnchor != null)
+            {
+                _activeAnchor.Terminate();
+                _activeAnchor = null;
+            }
+
+            _orbitingBody = null;
+            _pullingCheckpoint = null;
+            _pullingWormhole = null;
+            _currentState = ShipState.FreeFlight;
+            _anchorCooldownTimer = anchorCooldown;
+
+            float separationRadius = Mathf.Max(0f, body.radius)
+                + Mathf.Max(0f, _shipCollisionRadius)
+                + Mathf.Max(0f, planetBounceSeparationPadding);
+            Vector2 separatedPosition = center + normal * separationRadius;
+
+            _velocity = reflectedVelocity;
+            _rb.position = separatedPosition;
+            transform.position = separatedPosition;
+            _rb.linearVelocity = _velocity;
+
+            _lastBouncedPlanet = body;
+            _planetBounceCooldownTimer = Mathf.Max(0f, planetBounceCooldown);
+
+            Debug.Log($"[Ship] 撞到非锚定星球 {body.name}，反弹速度: {_velocity}");
         }
 
 #if UNITY_EDITOR

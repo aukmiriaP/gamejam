@@ -373,6 +373,11 @@ MonoBehaviour:
   maxOrbitReleaseSpeed: 15
   planetImpactPadding: 0.08
   fallbackShipCollisionRadius: 0.35
+  planetBounceSpeedMultiplier: 0.85
+  planetBounceMinSpeed: 5
+  planetBounceMaxSpeed: 14
+  planetBounceSeparationPadding: 0.08
+  planetBounceCooldown: 0.12
   checkpointPullSpeed: 8
   checkpointArrivalDistance: 0.2
   wormholePullSpeed: 8

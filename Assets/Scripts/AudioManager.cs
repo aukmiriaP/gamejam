@@ -15,7 +15,7 @@ public class AudioManager : MonoBehaviour
         {
             Instance = this;
             // 如果你希望切换场景时音效也不断，可以取消注释下面这行
-            // DontDestroyOnLoad(gameObject); 
+            // DontDestroyOnLoad(gameObject);
         }
         else
         {
