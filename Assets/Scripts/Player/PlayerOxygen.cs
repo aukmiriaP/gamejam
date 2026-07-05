@@ -9,6 +9,8 @@ namespace AnchorGame
         [SerializeField] private float maxOxygen = 100f;
         [SerializeField] private float drainPerSecond = 5f;
         [SerializeField] private bool oxygenActive;
+        [SerializeField] private bool startActiveOnAwake;
+        [SerializeField] private bool keepActiveAfterRespawn;
         [SerializeField] private string finishCheckpointName = "Checkpoint_3";
 
         [Header("UI")]
@@ -41,6 +43,7 @@ namespace AnchorGame
                 shipRenderer = GetComponentInChildren<SpriteRenderer>();
             }
 
+            oxygenActive = oxygenActive || startActiveOnAwake;
             _oxygen = maxOxygen;
             UpdateOxygenSprite(force: true);
         }
@@ -58,9 +61,7 @@ namespace AnchorGame
 
             if (_oxygen <= 0f)
             {
-                oxygenActive = false;
-                _ship.RespawnAtCheckpoint();
-                ResetOxygen();
+                RespawnFromOxygenFailure();
                 Debug.Log("[Oxygen] 氧气耗尽，回到当前存档点");
             }
         }
@@ -97,9 +98,7 @@ namespace AnchorGame
 
             if (_oxygen <= 0f)
             {
-                oxygenActive = false;
-                _ship.RespawnAtCheckpoint();
-                ResetOxygen();
+                RespawnFromOxygenFailure();
             }
         }
 
@@ -107,6 +106,13 @@ namespace AnchorGame
         {
             _oxygen = maxOxygen;
             UpdateOxygenSprite(force: true);
+        }
+
+        private void RespawnFromOxygenFailure()
+        {
+            oxygenActive = keepActiveAfterRespawn;
+            _ship.RespawnAtCheckpoint();
+            ResetOxygen();
         }
 
         public void OnCheckpointReached(Checkpoint checkpoint)

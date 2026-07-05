@@ -366,9 +366,9 @@ MonoBehaviour:
   anchorCooldown: 0.3
   anchorChainShortenSpeed: 0.7
   maxOrbitAccel: 12
-  shootSFX: {fileID: 0}
-  crashSFX: {fileID: 0}
-  hitSFX: {fileID: 0}
+  shootSFX: {fileID: 8300000, guid: ffdb663c89c4dbd459fe00a388d9904e, type: 3}
+  crashSFX: {fileID: 8300000, guid: 0637df6e7332694429c8ef38a38bff32, type: 3}
+  hitSFX: {fileID: 8300000, guid: 496c6534fcf5a3a4e88d53756e489ee0, type: 3}
   orbitSpeedGainExponent: 2
   maxOrbitReleaseSpeed: 15
   planetImpactPadding: 0.08
@@ -406,6 +406,8 @@ MonoBehaviour:
   maxOxygen: 100
   drainPerSecond: 5
   oxygenActive: 0
+  startActiveOnAwake: 0
+  keepActiveAfterRespawn: 0
   finishCheckpointName: Checkpoint_3
   showLegacyOnGui: 0
   barPosition: {x: 24, y: 24}

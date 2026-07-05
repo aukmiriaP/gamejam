@@ -12,17 +12,8 @@ EditorBuildSettings:
     path: Assets/Scenes/TutorialLevel.unity
     guid: c7767e87509e62c429a1f827fe9b63b1
   - enabled: 1
-    path: Assets/Scenes/Level_01.unity
-    guid: b0b1d16aaed0b9a4d9c219b331e926cf
-  - enabled: 1
     path: Assets/Scenes/Level_02.unity
     guid: 3cd9c125c97fda245876de7496767bc7
-  - enabled: 1
-    path: Assets/Scenes/Level_03.unity
-    guid: a95f9f30246448f4cae9cebc2873b3b0
-  - enabled: 1
-    path: Assets/Scenes/Level_04.unity
-    guid: cd469e94a3c2efe42b5e6235d52b5627
   m_configObjects:
     com.unity.dt.app-ui: {fileID: 11400000, guid: 1b1c20d82303e4b5781c3ef50ac1449f, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
