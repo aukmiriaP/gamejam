@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 66384742f5f9bd44e960d5f2eb082b5d, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnchorGame.CelestialBody
   radius: 0.6
   gravityStrength: 0
@@ -408,8 +408,8 @@ Transform:
   m_GameObject: {fileID: 135603506}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -14.49, y: 2.44, z: 0}
-  m_LocalScale: {x: 2.0536, y: 2.0536, z: 2.0536}
+  m_LocalPosition: {x: -23.415, y: 2.44, z: 0}
+  m_LocalScale: {x: 2.402096, y: 2.402096, z: 2.402096}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -729,8 +729,8 @@ Transform:
   m_GameObject: {fileID: 237898945}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 90.4, y: 2.44, z: 0}
-  m_LocalScale: {x: 2.0536, y: 2.0536, z: 2.0536}
+  m_LocalPosition: {x: 99.276, y: 2.44, z: 0}
+  m_LocalScale: {x: 2.402096, y: 2.402096, z: 2.402096}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -764,7 +764,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f3a9a891cfd1c4abbccd3198f95a19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnchorGame.AsteroidStreamSpawner
-  shardPrefab: {fileID: 432448454155408751, guid: ad69490d23323c4489f3bc05ec537390, type: 3}
+  shardPrefab: {fileID: 4924744583127031074, guid: 47b058ae2493067489462a93638dcfc0, type: 3}
+  shardPrefabs:
+  - {fileID: 4924744583127031074, guid: 47b058ae2493067489462a93638dcfc0, type: 3}
+  - {fileID: 3699461553227777842, guid: 22963e505d0482d46a95de6431aa212e, type: 3}
+  - {fileID: 3293357927231848866, guid: 75fbca4227c7e654b987dd9cc507caaf, type: 3}
+  - {fileID: 5876432463247058730, guid: 96cf0ad9b7b87304d91b4bed9dff8d93, type: 3}
+  - {fileID: 1610806759603383170, guid: ba685f3fe903194469492632e2bf9f66, type: 3}
+  - {fileID: 4571291008789975187, guid: 8a7db764ad8c0db41bfbc36b1ebb087b, type: 3}
   direction: {x: 0, y: -1}
   streamWidth: 42
   spawnIntervalMin: 0.45
@@ -1270,8 +1277,8 @@ Transform:
   m_GameObject: {fileID: 953383037}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 69.4, y: 2.44, z: 0}
-  m_LocalScale: {x: 2.0536, y: 2.0536, z: 2.0536}
+  m_LocalPosition: {x: 74.712, y: 2.44, z: 0}
+  m_LocalScale: {x: 2.402096, y: 2.402096, z: 2.402096}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1361,8 +1368,8 @@ Transform:
   m_GameObject: {fileID: 960414656}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 48.42, y: 2.44, z: 0}
-  m_LocalScale: {x: 2.0536, y: 2.0536, z: 2.0536}
+  m_LocalPosition: {x: 50.171, y: 2.44, z: 0}
+  m_LocalScale: {x: 2.402096, y: 2.402096, z: 2.402096}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1395,7 +1402,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7f48521796005b549a74627640496b1b, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
   sfxSource: {fileID: 1191728195}
 --- !u!82 &1191728195
@@ -2101,8 +2108,8 @@ Transform:
   m_GameObject: {fileID: 1588324599}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -35.2, y: 2.44, z: 0}
-  m_LocalScale: {x: 2.0536, y: 2.0536, z: 2.0536}
+  m_LocalPosition: {x: -47.639, y: 2.44, z: 0}
+  m_LocalScale: {x: 2.402096, y: 2.402096, z: 2.402096}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -2192,8 +2199,8 @@ Transform:
   m_GameObject: {fileID: 1611970223}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 111.4, y: 2.44, z: 0}
-  m_LocalScale: {x: 2.0536, y: 2.0536, z: 2.0536}
+  m_LocalPosition: {x: 123.84, y: 2.44, z: 0}
+  m_LocalScale: {x: 2.402096, y: 2.402096, z: 2.402096}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -2340,8 +2347,8 @@ Transform:
   m_GameObject: {fileID: 1755722946}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -14.49, y: 2.44, z: 0}
-  m_LocalScale: {x: 2.0536, y: 2.0536, z: 2.0536}
+  m_LocalPosition: {x: -23.415, y: 2.44, z: 0}
+  m_LocalScale: {x: 2.402096, y: 2.402096, z: 2.402096}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -2436,8 +2443,8 @@ Transform:
   m_GameObject: {fileID: 1812788683}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 27.4, y: 2.44, z: 0}
-  m_LocalScale: {x: 2.0536, y: 2.0536, z: 2.0536}
+  m_LocalPosition: {x: 25.584, y: 2.44, z: 0}
+  m_LocalScale: {x: 2.402096, y: 2.402096, z: 2.402096}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -2644,7 +2651,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f3a9a891cfd1c4abbccd3198f95a19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnchorGame.AsteroidStreamSpawner
-  shardPrefab: {fileID: 432448454155408751, guid: ad69490d23323c4489f3bc05ec537390, type: 3}
+  shardPrefab: {fileID: 4924744583127031074, guid: 47b058ae2493067489462a93638dcfc0, type: 3}
+  shardPrefabs:
+  - {fileID: 4924744583127031074, guid: 47b058ae2493067489462a93638dcfc0, type: 3}
+  - {fileID: 3699461553227777842, guid: 22963e505d0482d46a95de6431aa212e, type: 3}
+  - {fileID: 3293357927231848866, guid: 75fbca4227c7e654b987dd9cc507caaf, type: 3}
+  - {fileID: 5876432463247058730, guid: 96cf0ad9b7b87304d91b4bed9dff8d93, type: 3}
+  - {fileID: 1610806759603383170, guid: ba685f3fe903194469492632e2bf9f66, type: 3}
+  - {fileID: 4571291008789975187, guid: 8a7db764ad8c0db41bfbc36b1ebb087b, type: 3}
   direction: {x: 0, y: 1}
   streamWidth: 42
   spawnIntervalMin: 0.45
@@ -2814,7 +2828,7 @@ Transform:
   m_GameObject: {fileID: 1918268461}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 61.3, y: 9.48, z: 0}
+  m_LocalPosition: {x: 61.3, y: 9.6, z: 0}
   m_LocalScale: {x: 97.3, y: 1.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2905,8 +2919,8 @@ Transform:
   m_GameObject: {fileID: 1979260765}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.51, y: 2.44, z: 0}
-  m_LocalScale: {x: 2.0536, y: 2.0536, z: 2.0536}
+  m_LocalPosition: {x: 1.149, y: 2.44, z: 0}
+  m_LocalScale: {x: 2.402096, y: 2.402096, z: 2.402096}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -3102,7 +3116,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9058813664466557379, guid: 6be3f4335a6ce304d8b010d8d8b41300, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 9.48
+      value: 9.6
       objectReference: {fileID: 0}
     - target: {fileID: 9058813664466557379, guid: 6be3f4335a6ce304d8b010d8d8b41300, type: 3}
       propertyPath: m_LocalPosition.z
